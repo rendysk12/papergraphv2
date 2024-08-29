@@ -1,0 +1,27 @@
+.abstract-section {
+    position: relative;
+    max-height: 450px;
+    text-align: justify; /* Menyelaraskan teks ke tengah */
+
+  }
+  .abstract-title {
+    position: sticky;
+    top: 0;
+    background: white; /* Background color to cover the content when scrolling */
+    z-index: 1; /* Ensure title is above the scrolling content */
+    padding: 0.5rem;
+  }
+  .abstract-content {
+    
+    height:400px;
+    overflow: auto;
+    
+  }
+  .abstract-content::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  .abstract-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
