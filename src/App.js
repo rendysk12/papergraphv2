@@ -182,6 +182,7 @@ if(doi==null){
   
     try {
       //agar muncul loading pada kursor
+      console.log(doi);
       const citedPaper = await fetch(`https://opencitations.net/index/coci/api/v1/references/${doi}`)
   
       const datacitedPaper = await citedPaper.json();
@@ -542,7 +543,7 @@ const handleChangePaper=(e)=>{
           <div className="overflow-hidden">
             <div className="inputContainer">
               <div  className="xl:py-5 sm:py-3 xl:px-10 font-bold text-black text-center sm:text-md xl:text-xl bg-lime-300 text-black rounded-xl block mt-2 border-2 border-dashed border-slate-800 mb-10">
-                <p>PAPER DISCOVERY KNOWLEDGE GRAPH</p>
+                <p>PAPERGRAPH</p>
               </div>
               <input
                 type="text"
