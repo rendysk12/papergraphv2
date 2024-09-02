@@ -2,6 +2,8 @@ import './App.css';
 import Graph from "react-graph-vis";
 import React, { useState  } from "react";
 import NodePopup from './popUp_Folder/NodePopup';
+import { ThreeDots } from "react-loader-spinner" // Import the specific loader component
+import "./App.css" // Ensure you import the CSS file
 
 //deklarasi
 let coreTopicNumber=0;
@@ -87,9 +89,13 @@ function App() {
 
     //agar muncul loading pada kursor
      document.body.style.cursor = "wait";
+     setLoading(true)
+
      document.getElementsByClassName("generateButton")[0].disabled = true
       searchPaperQuery();
-      document.body.style.cursor = "default";
+      
+      
+
 }
 
 //mencari data paper di scopus
@@ -155,13 +161,16 @@ const searchPaperQuery = async () => {
     
     //agar muncul loading pada kursor
     document.getElementsByClassName("generateButton")[0].disabled = false;
+    setLoading(false);
+    document.body.style.cursor = "default";
   } catch (error) {
     console.error('Error fetching search results:', error);
-
+    setLoading(false);
+    document.body.style.cursor = "default";
   }
 };
 
-const searchPaperQueryLanjutan = async (selectedNode, doi, database) => {
+const searchPaperQueryLanjutan = async (selectedNode, doi) => {
   let paperLimit= document.getElementsByClassName("PaperLimit")[0].value;
   let startYear= document.getElementsByClassName("startYear")[0].value;
   let endYear= document.getElementsByClassName("endYear")[0].value;
@@ -255,10 +264,15 @@ if(doi==null){
        
        document.getElementsByClassName("generateButton")[0].disabled = false;
        document.body.style.cursor = "default";
+       setLoading(false) // Reset loading state to false
+    
+
   
     } catch (error) {
       console.error('Error fetching search results:', error);
       document.body.style.cursor = "default";
+      setLoading(false) // Reset loading state to false
+
     }
 //   }else if(database===1){
 //   try {
@@ -405,11 +419,13 @@ console.log(doi);
     
     document.getElementsByClassName("generateButton")[0].disabled = false;
     document.body.style.cursor = "default";
-
+    setLoading(false);
 
   } catch (error) {
     alert('Papers not found');
     document.body.style.cursor = "default";
+    setLoading(false);
+
   }
 
 }
@@ -472,10 +488,13 @@ const getPaperDetail= async(doi)=>{
    }
   //Search citation
   const handleCitationSearch= async()=>{
+    setLoading(true) // Set loading state to true
+
     document.body.style.cursor = "wait";
     handleClosePopup();
  console.log(selectedNode.doi);
     searchPaperQueryLanjutan(selectedNode.id, selectedNode.doi, selectedNode.database);    
+    
   }
 
   const handleUrlInputChange=(url)=>{
@@ -484,6 +503,7 @@ const getPaperDetail= async(doi)=>{
   }
 
   const handleSimilarPaper= async()=>{
+    setLoading(true) // Set loading state to true
     document.body.style.cursor = "wait";
     handleClosePopup();
     searchSimilarPaper (selectedNode.id, selectedNode.doi);
@@ -524,13 +544,21 @@ const handleChangeEndYear=(e)=>{
 }
 
 
-const handleChangePaper=(e)=>{
-  const value = e.target.value;
+const handleChangePaper = (e) => {
+  const value = e.target.value
 
-  if (/^\d*$/.test(value)) { // Allow only digits
-    setPaperLimit(value);
+  if (/^\d*$/.test(value)) {
+      // Allow only digits
+      if (parseInt(value) > 25) {
+          alert("Only a maximum of 25 papers can be displayed.")
+          setPaperLimit("25")
+      } else {
+          setPaperLimit(value)
+      }
   }
 }
+
+const [loading, setLoading] = useState(false);
 
 
 
@@ -622,6 +650,16 @@ const handleChangePaper=(e)=>{
         handleClickBackGround={handleClickBackGround1}
         onSimilarPaper={handleSimilarPaper}
       />
+        {loading && (
+          <div className="loading-overlay">
+             <div className="loading-container">
+                <ThreeDots color="#00BFFF" height={80} width={80} />
+                  <div className="loading-text">
+                     Loading, please wait...
+              </div>
+            </div>
+          </div>
+            )}
 
     </div>
   );
