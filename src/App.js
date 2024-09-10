@@ -167,6 +167,12 @@ const searchPaperQuery = async () => {
     console.error('Error fetching search results:', error);
     setLoading(false);
     document.body.style.cursor = "default";
+    setTimeout(() => {
+      alert('Paper not available'); 
+    document.getElementsByClassName("generateButton")[0].disabled = false;
+    }, 300);
+    
+
   }
 };
 
@@ -272,6 +278,7 @@ if(doi==null){
       console.error('Error fetching search results:', error);
       document.body.style.cursor = "default";
       setLoading(false) // Reset loading state to false
+      
 
     }
 //   }else if(database===1){
