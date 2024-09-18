@@ -537,6 +537,8 @@ const [startYear, setStartYear] = useState(new Date().getFullYear()-5);
 //end year
 const [endYear, setendYear] = useState(new Date().getFullYear());
 
+const [isSidebarVisible, setSidebarVisible] = useState(true); // Sidebar hidden by default on mobile
+
 const handleChangeStartYear=(e)=>{
   const value=e.target.value;
   if (/^\d{0,4}$/.test(value)) {
@@ -567,14 +569,19 @@ const handleChangePaper = (e) => {
 
 const [loading, setLoading] = useState(false);
 
+// show/hide sidebar
 
-
+const toggleSidebar = () => {
+  setSidebarVisible(!isSidebarVisible);
+};
   return (
     <div className="h-screen w-screen flex flex-cols gap-2 bg-gradient-to-r from-indigo-200 via-red-200 to-yellow-100 background-animate">
       {/* SideBox */}
-      <div className="border-2 border-black rounded-2xl ml-2 my-2 shadow-lg bg-white w-[400px] ">
-        {/* GraphGenerate */}
+      {isSidebarVisible &&(
+      <div className="border-2 border-black rounded-2xl ml-2 my-2 shadow-lg bg-white sidebox w-[400px]">
+      {/* GraphGenerate */}
         <div className="">
+
           <div className="overflow-hidden">
             <div className="inputContainer">
               <div  className="xl:py-5 sm:py-3 xl:px-10 font-bold text-black text-center sm:text-md xl:text-xl bg-lime-300 text-black rounded-xl block mt-2 border-2 border-dashed border-slate-800 mb-10">
@@ -632,10 +639,53 @@ const [loading, setLoading] = useState(false);
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
+         
+      <div className="buttonShowHide">
+        <button
+          onClick={toggleSidebar}
+          className={`fixed bottom-3 right-4 bg-blue-500 text-white p-2 rounded-lg shadow-lg z-30`}
+          style={{ height: '2rem', width:'2rem'}}        
+          >
+          {isSidebarVisible ? (
+           
+             <svg
+             xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             strokeWidth="1.5"
+             stroke="currentColor"
+             className="w-6 h-6"
+           >
+             <path
+               strokeLinecap="round"
+               strokeLinejoin="round"
+               d="M1 5.5l7.5 7.5 7.5-7.5"
+             />
+           </svg> // Panah ke bawah (untuk show)
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 10.5l-7.5-7.5-7.5 7.5"
+              />
+            </svg> // Panah ke atas (untuk hide)
+          )}
+        </button>
+        </div>
+
 
       {/* GraphDisplay */}
-      <div className="border-2 border-black rounded-2xl mr-2 my-2 shadow-lg  overflow-hidden bg-white-800 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-100 ">
+      <div className=" graph-display border-2 border-black rounded-2xl mr-2 my-2 shadow-lg  overflow-hidden bg-white-800 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-100 ">
+      
         <Graph
           graph={graphState}
           options={options}

@@ -25,3 +25,40 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  /* Untuk tampilan mobile */
+@media (max-width: 767px) {
+  .abstract-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+ 
+  .popupDataPaper .bg-white {
+    width: 90%;
+    height: 80%;
+    position: relative;
+  }
+
+
+
+  .popupDataPaper .abstract-content {
+   height: 260px;
+  }
+  .btn{
+    height: 7vh;
+    font-size: 0.7rem;
+    width: 100%;
+  }
+  .title{
+    font-size: 1rem;
+    
+  }
+  .class-button{
+    position: absolute;
+  bottom: 0;
+  width: 92%; /* Pastikan tombol menempati lebar penuh */
+  display: flex;
+  justify-content: center; /* Pusatkan tombol secara horizontal */
+  margin-bottom: 1.5vh;
+  }
+}
