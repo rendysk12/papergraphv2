@@ -56,7 +56,7 @@
   .class-button{
     position: absolute;
   bottom: 0;
-  width: 92%; /* Pastikan tombol menempati lebar penuh */
+  width: 90%; /* Pastikan tombol menempati lebar penuh */
   display: flex;
   justify-content: center; /* Pusatkan tombol secara horizontal */
   margin-bottom: 1.5vh;
