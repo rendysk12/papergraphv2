@@ -13,40 +13,61 @@
   }
   .abstract-content {
     
-    height:400px;
+    height:300px;
     overflow: auto;
+    border: 1px solid black;
+    padding: 1vw 1vw 0 1vw;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
     
   }
   .abstract-content::-webkit-scrollbar {
     width: 0;
     height: 0;
   }
-  .abstract-content {
+  
+  .pop-background{
+    max-height: 85vh;
+    overflow: auto;
     -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none; 
   }
-
+  .pop-background::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+  }
+  
   /* Untuk tampilan mobile */
 @media (max-width: 767px) {
   .abstract-content {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+    padding: 3vw;
   }
  
   .popupDataPaper .bg-white {
     width: 90%;
-    height: 80%;
+    min-height: 70%;
     position: relative;
   }
 
 
-
+  .pop-background{
+    max-height: 85vh;
+    overflow: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; 
+  }
+  .pop-background::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+  }
   .popupDataPaper .abstract-content {
-   height: 260px;
+   height: 350px;
   }
   .btn{
     height: 7vh;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     width: 100%;
   }
   .title{
@@ -54,11 +75,11 @@
     
   }
   .class-button{
-    position: absolute;
-  bottom: 0;
-  width: 90%; /* Pastikan tombol menempati lebar penuh */
+    position: relative;
+  
+  width: 100%; /* Pastikan tombol menempati lebar penuh */
   display: flex;
   justify-content: center; /* Pusatkan tombol secara horizontal */
-  margin-bottom: 1.5vh;
   }
 }
+

@@ -1,6 +1,6 @@
 import './App.css';
 import Graph from "react-graph-vis";
-import React, { useState  } from "react";
+import React, { useState,useEffect, useRef  } from "react";
 import NodePopup from './popUp_Folder/NodePopup';
 import { ThreeDots } from "react-loader-spinner" // Import the specific loader component
 import "./App.css" // Ensure you import the CSS file
@@ -52,7 +52,10 @@ let options = {
   physics: {
     enabled: false,  
   },
+  interaction: {
  
+    keyboard: true           // Mengaktifkan kontrol keyboard
+  }
 }
 
 function App() {
@@ -568,7 +571,17 @@ const handleChangePaper = (e) => {
 }
 
 const [loading, setLoading] = useState(false);
-
+const networkRef = useRef(null);
+useEffect(() => {
+  console.log("jalan");
+  if (networkRef.current) {
+    // Pindahkan tampilan ke posisi x=1 dan y=5
+    networkRef.current.moveTo({
+      position: { x: 300, y: 20 },
+      scale: 1, // Atur skala tampilan
+    });
+  }
+}, []);
 // show/hide sidebar
 
 const toggleSidebar = () => {
@@ -694,6 +707,7 @@ const toggleSidebar = () => {
             height: "800px",
             width: "1300px",
           }}
+          getNetwork={network => (networkRef.current = network)} 
         />
          
       </div>

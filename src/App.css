@@ -129,7 +129,10 @@
   }
   /* Untuk layar yang lebih besar */
  
-  
+  .graph-display{
+    width: 100%;
+
+  } 
 @media only screen and (max-width: 767px) {
     .buttonShowHide{
         display:contents;

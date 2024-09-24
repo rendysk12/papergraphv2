@@ -40,7 +40,7 @@ const NodePopup = ({
   return (
     <div className="popupDataPaper fixed inset-0 flex justify-center items-center z-50">
       <div className="absolute inset-0 bg-gray-600 bg-opacity-50" onClick={handleClickBackGround}></div>
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-xl w-full relative ">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-xl w-full relative pop-background">
         <button 
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           onClick={onClose}
@@ -51,19 +51,19 @@ const NodePopup = ({
         <h2 className="title text-2xl font-semibold mb-4 text-center">{node.label}</h2>
 
         {/* Abstract Section */}
-<div className="mb-4 abstract-section">
-  
-  <h3 className="abstract-title text-lg font-medium text-gray-700">Abstract:</h3>
-  <div className="abstract-content">
-    {paperDetail && paperDetail.abstract ? (
-      <p className="text-gray-600 leading-relaxed">{paperDetail.abstract}</p>
-    ) : (
-      showNotFound && (
-        <p className="text-gray-600 leading-relaxed">Abstract not found....</p>
-      )
-    )}
-  </div>
-</div>
+        <div className="mb-4 abstract-section">
+          
+          <h3 className="abstract-title text-lg font-medium text-gray-700">Abstract:</h3>
+          <div className="abstract-content">
+            {paperDetail && paperDetail.abstract ? (
+              <p className="text-gray-600 leading-relaxed">{paperDetail.abstract}</p>
+            ) : (
+              showNotFound && (
+                <p className="text-gray-600 leading-relaxed">Abstract not found....</p>
+              )
+            )}
+          </div>
+        </div>
 
 
 
