@@ -130,7 +130,7 @@
   /* Untuk layar yang lebih besar */
  
   .graph-display{
-    width: 100%;
+    width: 90vw;
 
   } 
 @media only screen and (max-width: 767px) {
