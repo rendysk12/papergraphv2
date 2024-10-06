@@ -63,9 +63,16 @@
 }
 
 
-
-
-
+.minimap{
+  height: 157px; 
+  width: 157px; 
+  position: absolute; 
+  top: 10px; 
+  left: 10px;
+  border: 2px solid black; 
+  border-radius:10px;
+  padding:2px
+ }
 
 .generateButton:disabled {
     background-color: rgb(0, 0, 0, 0.5);
@@ -175,4 +182,5 @@
    
     
   }
+  
   

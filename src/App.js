@@ -10,6 +10,52 @@ let coreTopicNumber=0;
 let nextIdForPaper=1;
 let urlPopup= "";
 
+//minimap
+
+const optionsMiniMap = {
+  interaction: { zoomView: false, dragView: false },
+  nodes: {
+    shape: 'box',
+    borderWidth: 2,
+    widthConstraint:{
+      maximum:300
+      
+    }
+    },
+  edges:{
+    length: 100,
+    
+    arrows: {
+      to: {
+        enabled: true,
+        type: 'arrow',
+      }
+    },
+    smooth: {
+      type: 'vertical',
+      forceDirection: 'horizontal', // Forces edge direction to be horizontal
+      roundness: 1,
+    },
+  },
+  layout: {
+    hierarchical: {
+    enabled: true,
+    levelSeparation: 300, // Menyesuaikan jarak antar level (vertikal)
+    nodeSpacing: 100, // Menyesuaikan jarak antar node dalam satu level (horizontal)
+    treeSpacing: 100,
+    direction: 'LR', // Arah layout dari kiri ke kanan
+    sortMethod: 'directed', // Metode pengurutan node
+    edgeMinimization: true,
+    parentCentralization: false,
+    shakeTowards: 'roots',
+    }
+  },
+  physics: {
+    enabled: false,  
+  },
+};
+
+
 let options = {
   // Definisikan opsi untuk komponen Graph di sini
 
@@ -168,13 +214,15 @@ const searchPaperQuery = async () => {
     document.body.style.cursor = "default";
   } catch (error) {
     console.error('Error fetching search results:', error);
-    setLoading(false);
+    
     document.body.style.cursor = "default";
     setTimeout(() => {
       alert('Paper not available'); 
     document.getElementsByClassName("generateButton")[0].disabled = false;
+    setLoading(false);
+
     }, 300);
-    
+    setLoading(false);
 
   }
 };
@@ -185,12 +233,12 @@ const searchPaperQueryLanjutan = async (selectedNode, doi) => {
   let endYear= document.getElementsByClassName("endYear")[0].value;
   let date;
  
-//apabila paper tidak memiliki doi
-if(doi==null){
-  alert('Paper doesn`t have DOI');
-  document.body.style.cursor = "default";
-  return;
-}
+  //apabila paper tidak memiliki doi
+  if(doi==null){
+    alert('Paper doesn`t have DOI');
+    document.body.style.cursor = "default";
+    return;
+  }
 
   if(startYear===endYear){
     date= startYear;
@@ -216,6 +264,7 @@ if(doi==null){
         console.log('Result set was empty');
         alert('Paper not available'); 
         document.body.style.cursor = "default";
+        setLoading(false);
         return; 
        }
   //filter supaya tidak ada data redundan
@@ -284,6 +333,7 @@ if(doi==null){
       
 
     }
+    updateMiniMap();
 //   }else if(database===1){
 //   try {
 //    ///citing
@@ -430,14 +480,14 @@ console.log(doi);
     document.getElementsByClassName("generateButton")[0].disabled = false;
     document.body.style.cursor = "default";
     setLoading(false);
-
+    
   } catch (error) {
     alert('Papers not found');
     document.body.style.cursor = "default";
     setLoading(false);
 
   }
-
+  updateMiniMap();
 }
 
 const getPaperDetail= async(doi)=>{
@@ -571,22 +621,71 @@ const handleChangePaper = (e) => {
 }
 
 const [loading, setLoading] = useState(false);
-const networkRef = useRef(null);
+
+///////////////////fungsi fit minimap
+const miniMapNetworkRef = useRef(null);
+const getMiniMapNetwork = (network) => {
+  miniMapNetworkRef.current = network; // Simpan referensi network di miniMapNetworkRef
+};
+const updateMiniMap=()=>{
+  
+  if (miniMapNetworkRef.current){
+
+    miniMapNetworkRef.current.fit({
+      animation: true,
+      scale:0.1
+    })
+  }
+  console.log("masuk update minimap");
+}
+/////////////////////////////////
+//////fitur klik minimap
+const mainMapNetworkRef = useRef(null);
+
+const getMainMapNetwork = (network) => {
+ mainMapNetworkRef.current = network;
+}
+
+const eventsMiniMap = {
+  click: (event) => {
+    const { pointer } = event;
+    const { x, y } = pointer.canvas;
+
+     if (mainMapNetworkRef.current){
+      mainMapNetworkRef.current.moveTo({
+        position: {x,y},
+        scale:1,
+      })
+    }
+  }
+};
+
+/////////
 useEffect(() => {
+  if (miniMapNetworkRef.current){
+    miniMapNetworkRef.current.moveTo({
+      scale:0.1,
+      animation:true
+    })
+  }
   console.log("jalan");
-  if (networkRef.current) {
+  if (mainMapNetworkRef.current) {
     // Pindahkan tampilan ke posisi x=1 dan y=5
-    networkRef.current.moveTo({
+    mainMapNetworkRef.current.moveTo({
       position: { x: 300, y: 20 },
       scale: 1, // Atur skala tampilan
     });
   }
+  
 }, []);
+
 // show/hide sidebar
 
 const toggleSidebar = () => {
   setSidebarVisible(!isSidebarVisible);
 };
+
+
   return (
     <div className="h-screen w-screen flex flex-cols gap-2 bg-gradient-to-r from-indigo-200 via-red-200 to-yellow-100 background-animate">
       {/* SideBox */}
@@ -700,6 +799,7 @@ const toggleSidebar = () => {
       <div className=" graph-display border-2 border-black rounded-2xl mr-2 my-2 shadow-lg  overflow-hidden bg-white-800 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-100 ">
       
         <Graph
+        
           graph={graphState}
           options={options}
           events={{ selectNode: handleNodeSelect}} 
@@ -707,9 +807,19 @@ const toggleSidebar = () => {
             height: "800px",
             width: "1300px",
           }}
-          getNetwork={network => (networkRef.current = network)} 
+          getNetwork={getMainMapNetwork} // Ambil network mini map setelah render
+
         />
-         
+             {/* Minimap */}
+             <div className="minimap" >
+          <Graph
+          
+          graph={graphState}
+          options={optionsMiniMap}
+          events={eventsMiniMap}
+          getNetwork={getMiniMapNetwork} // Ambil network mini map setelah render
+        />
+      </div>
       </div>
       <NodePopup 
         node={selectedNode}
@@ -732,6 +842,7 @@ const toggleSidebar = () => {
           </div>
             )}
 
+      
     </div>
   );
 }
